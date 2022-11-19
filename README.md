@@ -15,6 +15,7 @@ In order to compile and execute a C program, you need to have the essential pack
 $ sudo apt-get install build-essential
 
 Step 2: Write a simple C program
+
 Step 3: Compile the C program with gcc Compiler
 In your Terminal, enter the following command in order to make an executable version of the program you have written:
 
