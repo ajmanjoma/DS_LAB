@@ -1,4 +1,4 @@
-include<stdio.h>
+#include<stdio.h>
 #include<stdlib.h>
 #define MAX 20
 void printsparse(int b[MAX][3]);
