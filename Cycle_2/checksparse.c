@@ -1,51 +1,120 @@
-#include <stdio.h>
-
-typedef struct
+include<stdio.h>
+#include<stdlib.h>
+#define MAX 20
+void printsparse(int b[MAX][3]);
+void readsparse(int b[MAX][3]);
+void addsparse(int b1[MAX][3],int b2[MAX][3],int b3[MAX][3]);
+void main()
 {
-    int row;
-    int col;
-    int value;
-} matrix;
-
-int main()
+   
+	int b1[MAX][3],b2[MAX][3],b3[MAX][3];
+	printf("\nReading the first sparse matrix..\n");   
+	readsparse(b1);
+	printf("\nReading the second sparse matrix..\n");   
+	readsparse(b2);
+	addsparse(b1,b2,b3);
+	printf("\nSum\n"); 
+	printsparse(b3);
+	printf("\n");
+}
+void readsparse(int b[MAX][3])
 {
-    int size;
-    printf("Enter the number of non zero elements: ");
-    scanf("%d", &size);
-
-    matrix m[size + 1];
-    m[0].value = size;
-
-    printf("Enter the number of rows and coloumns: ");
-    scanf("%d %d", &m[0].row, &m[0].col);
-
-    printf("Enter the sparse matrix representation: ");
-    for (int i = 1; i <= size; i++)
-        scanf("%d %d %d", &m[i].row, &m[i].col, &m[i].value);
-
-    printf("Sparse matrix representation\n");
-    for (int i = 0; i <= size; i++)
-        printf("%d %d %d\n", m[i].row, m[i].col, m[i].value);
-
-    if (m[0].row != m[0].col)
-    {
-        printf("Matrix is not a square matrix\n");
-        return 1;
-    }
-    int is_symmetric = 0;
-    for (int i = 1; i <= size; i++)
-    {
-        is_symmetric = 0;
-        for (int j = 1; j <= size; j++)
-            if (m[i].row == m[j].col && m[i].col == m[j].row && m[i].value == m[j].value)
-                is_symmetric = 1;
-        if (is_symmetric == 0)
+	int i,t,m,n;
+	printf("\nEnter number of rows and columns of the matrix: ");
+	scanf("%d%d",&m,&n);
+	printf("Number of non-zero elements: ");
+	scanf("%d",&t);
+	b[0][0]=m;
+	b[0][1]=n;
+	b[0][2]=t;
+	for(i=1;i<=t;i++)
+	    {
+	      printf("Enter the triples: ");
+	      scanf("%d%d%d",&b[i][0],&b[i][1],&b[i][2]);
+	    }
+}
+void addsparse(int b1[MAX][3],int b2[MAX][3],int b3[MAX][3])
+{
+	int t1,t2,i,j,k;
+	if(b1[0][0]!=b2[0][0]||b1[0][1]!=b2[0][1])
         {
-            printf("Matrix is not symmetric\n");
-            return 1;
-        }
-    }
-    printf("Matrix is sparse symmetric\n");
-
-    return 0;
+	    printf("\n Entered matrix is invalid \n Size must be equal");
+	    exit(0);
+	}
+	t1=b1[0][2];
+	t2=b2[0][2];
+	i=j=k=0;
+	b3[0][0]=b1[0][0];
+	b3[0][1]=b1[0][1];
+	while(i<=t1 && j<=t2)
+	{
+	  if(b1[i][0]<b2[j][0])      
+          {
+             b3[k][0]=b1[i][0];
+             b3[k][1]=b1[i][1];
+	     b3[k][2]=b1[i][2];
+	     k++;
+             i++;
+	  }
+	  else if(b2[j][0]<b1[i][0])      
+	  {
+	     b3[k][0]=b2[j][0];
+	     b3[k][1]=b2[j][1];
+             b3[k][2]=b2[j][2];
+	     k++;
+             j++;
+	  }
+	  else if(b1[i][1]<b2[j][1])      
+	  {
+	     b3[k][0]=b1[i][0];
+	     b3[k][1]=b1[i][1];
+	     b3[k][2]=b1[i][2];
+             k++;
+	     i++;
+	}
+	else if(b2[j][1]<b1[i][1])      
+	{
+             b3[k][0]=b2[j][0];
+	     b3[k][1]=b2[j][1];
+	     b3[k][2]=b2[j][2];
+             k++;
+	     j++;
+	}
+	else
+	{
+             b3[k][0]=b1[i][0];      
+             b3[k][1]=b1[i][1];
+	     b3[k][2]=b1[i][2]+b2[j][2];
+             k++;
+	     i++;
+	     j++;
+	}
+     }
+     while(i<=t1)       
+     {
+	 b3[k][0]=b1[i][0];
+	 b3[k][1]=b1[i][1];
+	 b3[k][2]=b1[i][2];
+	 i++;
+	 k++;
+     }
+     while(j<=t2)  
+     {
+	  b3[k][0]=b2[j][0];
+	  b3[k][1]=b1[j][1];
+	  b3[k][2]=b1[j][2];
+	  j++;
+	  k++;
+     }
+     b3[0][2]=k-1;      
+  }
+void printsparse(int b[MAX][3])
+{
+  int i,t;
+  t=b[0][2];
+  printf("\n%d\t%d\t%d",b[0][0],b[0][1],b[0][2]);
+  for(i=1;i<=t;i++)
+  {
+     printf("\n%d\t%d\t%d",b[i][0],b[i][1],b[i][2]);
+  }
 }
